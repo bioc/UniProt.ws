@@ -19,10 +19,10 @@ setMethod("cols", "UniProt.ws", function(x){.cols()})
 
 ## To make keys work I just want to return what was asked for...
 .keys <- function(x, keytype){
-  url <- 'http://www.UniProt.org/UniProt/?query=organism:'
-  idUrl <- paste0(url, taxId(x), "&format=tab&columns=id")
-  ## Now get that data
-  dat <- readLines(idUrl)[-1]
+   if(!any(keytypes(x) %in% keytype)){
+     stop("keytype argument MUST match a value returned by keytypes method")
+   }  
+  dat <- taxIdUniprots(x) ## pre-cached
   if(keytype == "UNIPROTKB"){
     return(dat)
   }else{
@@ -73,6 +73,10 @@ setMethod("keys", "UniProt.ws",
   if(!any(cols(x) %in% cols)){
     stop("cols argument MUST match a value returned by cols method")
   }
+  
+  ## 1st get all the (UNIPROTKB) possible keys for this organism
+  orgSpecificKeys <- keys(x, keytype="UNIPROTKB")
+  
   oriTabCols <- unique(c(keytype,cols))
   cols <- cols[!(cols %in% keytype)]  ## remove keytype from cols 
   trueKeys <- keys ## may change depending on keytype.
@@ -89,11 +93,16 @@ setMethod("keys", "UniProt.ws",
     colnames(dat)[2] <-  "ACC+ID" ## always the 2nd one...
     res[[length(res)+1]] <- dat
     keys <- unique(res[[1]][,2]) ## capture UniProts as keys from this point on
-    if(length(keys)==0) stop("No data is available for the keys provided.")
   }
-  if(length(colMappers) > 0){
-    res[[length(res)+1]] <- .getUPMappdata(colMappers, keys)
-  }
+
+  ## Now filter keys with orgSpecificKeys (uniprots intersected with uniprots)
+  keys <- intersect(keys, orgSpecificKeys)
+  if(length(keys)==0) stop("No data is available for the keys provided.")
+  
+  ## now get the other data (depending what was asked for)
+  if(length(colMappers) > 0 && colMappers!="ACC+ID"){
+     res[[length(res)+1]] <- .getUPMappdata(colMappers, keys)
+   }
   if(length(colUPGoodies) > 0){
     dat <- getUniprotGoodies(keys, colUPGoodies)
     colnames(dat)[1] <- "ACC+ID" ## always the 1st
@@ -118,8 +127,9 @@ setMethod("keys", "UniProt.ws",
   tab <- AnnotationDbi:::.resort(tab, trueKeys, keytype, oriTabCols)
   ## Now one last cast to make NAs (and all cols) and make things "uniform"
   cnames <- colnames(tab)
-  tab = data.frame(apply(tab, FUN=gsub, MARGIN=2, pattern="^$",
-                         replacement=as.character(NA)), stringsAsFactors=FALSE)
+  .blankToNA <- function(row){
+      gsub(pattern="^$",replacement=as.character(NA),row)}
+  tab <- data.frame( t(apply(tab,MARGIN=1,.blankToNA)), stringsAsFactors=FALSE)
   colnames(tab) <- cnames
   ## then return
   tab

@@ -173,7 +173,7 @@ if(interactive()){
 }
 
 ## use select to extract some data
-  keys <- c('1','2')
+  keys <- c("22627","22629")
   cols <- c("PDB","UNIGENE","SEQUENCE")
   kt <- "ENTREZ_GENE"
   res <- select(UniProt.ws, keys, cols, kt)
