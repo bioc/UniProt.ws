@@ -1,4 +1,7 @@
+import(methods)
 import(BiocGenerics)
+import(RCurl)
+import(RSQLite)
 importFrom(AnnotationDbi, keytypes, columns, keys, select)
 
 exportMethods(keytypes,
@@ -13,5 +16,3 @@ export(columns,
        availableUniprotSpecies,
        lookupUniprotSpeciesFromTaxId,
        UniProt.ws)
-
-

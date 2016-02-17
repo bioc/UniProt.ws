@@ -1,9 +1,9 @@
 Package: UniProt.ws
 Type: Package
 Title: R Interface to UniProt Web Services
-Version: 2.10.2
+Version: 2.10.3
 Depends: methods, utils, RSQLite, RCurl, BiocGenerics (>= 0.13.8)
-Imports: BiocGenerics, AnnotationDbi
+Imports: AnnotationDbi
 Suggests: RUnit
 Author: Marc Carlson
 Maintainer: Bioconductor Package Maintainer <maintainer@bioconductor.org>
