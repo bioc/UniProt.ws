@@ -2,12 +2,17 @@ Package: UniProt.ws
 Type: Package
 Title: R Interface to UniProt Web Services
 Version: 2.43.0
-Authors@R: c(person("Marc", "Carlson", role="aut",
-        email="maintainer@bioconductor.org"),
-    person("Csaba", "Ortutay", role="ctb"),
-    person("Marcel", "Ramos", , "marcel.ramos@roswellpark.org",
-        c("aut","cre"), c(ORCID = "0000-0002-3242-0582"))
-    )
+Description: The Universal Protein Resource (UniProt) is a comprehensive
+  resource for protein sequence and annotation data. This package provides a
+  collection of functions for retrieving, processing, and re-packaging UniProt
+  web services. The package makes use of UniProt's modernized REST API and
+  allows mapping of identifiers accross different databases.
+Authors@R: c(
+  person("Marc", "Carlson", , "maintainer@bioconductor.org", "aut"),
+  person("Csaba", "Ortutay", role="ctb"),
+  person("Marcel", "Ramos", , "marcel.ramos@roswellpark.org",
+      c("aut","cre"), c(ORCID = "0000-0002-3242-0582"))
+  )
 Depends:
   BiocGenerics,
   methods,
@@ -27,16 +32,12 @@ Suggests:
   knitr,
   rmarkdown,
   RUnit
-Description: The Universal Protein Resource (UniProt) is a comprehensive
-  resource for protein sequence and annotation data. This package provides a
-  collection of functions for retrieving, processing, and re-packaging UniProt
-  web services. The package makes use of UniProt's modernized REST API and
-  allows mapping of identifiers accross different databases.
-Collate: AllGenerics.R
-    AllClasses.R 
-    getFunctions.R 
-    methods-select.R 
-    utilities.R
+Collate:
+  AllGenerics.R
+  AllClasses.R 
+  getFunctions.R 
+  methods-select.R 
+  utilities.R
 License: Artistic-2.0
 biocViews: Annotation, Infrastructure, GO, KEGG, BioCarta
 BugReports: https://github.com/Bioconductor/UniProt.ws/issues
