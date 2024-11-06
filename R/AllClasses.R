@@ -21,6 +21,8 @@ UniProt.ws <- function(taxId=9606, ...) {
         pageSize = 25
     )
     taxIdUniprots <- results[["Entry"]]
+    if (!length(taxIdUniprots))
+        stop("No UniProt entries found for 'taxId = ", taxId, "'")
     organism <- unique(results[["Organism"]])
     .UniProt.ws(
         taxId = taxId, taxIdUniprots = taxIdUniprots, organism = organism, ...
